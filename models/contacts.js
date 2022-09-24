@@ -66,14 +66,15 @@ const addContact = async (body) => {
   }
 };
 
-const updateContact = async (contactId, body) => {
+const updateContact = async (id, body) => {
   try {
     const contactList = await listContacts();
-    const index = contactList.findIndex((item) => item.id === contactId);
+    const index = contactList.findIndex((item) => item.id === id);
     if (index === -1) {
       return null;
     }
-    contactList[index] = { id: uuidv4(), ...body };
+
+    contactList[index] = { id, ...body };
     await updateContacts(contactList);
     return contactList[index];
   } catch (error) {

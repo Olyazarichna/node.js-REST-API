@@ -5,4 +5,4 @@ const addContact = async(res, req)=>{
     res.status(201).json(result);
 }
 
-module.exports=addContact;
+module.exports = addContact;

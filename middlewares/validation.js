@@ -6,6 +6,7 @@ module.exports = {
       name: Joi.string().alphanum().min(3).max(30).required(),
       email: Joi.string().email({ minDomainSegments: 2 }).required(),
       phone: Joi.string().min(10).max(30).required(),
+      favorite: Joi.boolean(),
     });
     const validationResult = schema.validate(req.body);
     if (validationResult.error) {

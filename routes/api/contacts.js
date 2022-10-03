@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 // const { contactValidation } = require("../../middlewares/validation");
 
+
 const {
   // getContacts,
   // getOneContactById,
@@ -15,7 +16,7 @@ const {
 
 // router.get("/:contactId", getOneContactById);
 
-router.post("/",()=> addContact);
+router.post("/",()=>addContact);
 
 // router.delete("/:contactId", deleteContact);
 

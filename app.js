@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 
-const contactsRouter = require('./routes/api/contacts')
+const contactsRouter = require('./src/routes/api/contacts')
 
 const app = express()
 

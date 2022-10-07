@@ -16,7 +16,7 @@ const {
   updateFavorite,
 } = require("../../../src/controllers/contactsController");
 
-router.get("/",  ctrlWrapper(getContacts));
+router.get("/", ctrlWrapper(getContacts));
 
 router.get("/:contactId", isValidId, ctrlWrapper(getContactById));
 

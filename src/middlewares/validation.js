@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const validNum = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
+
 module.exports = {
   contactValidation: (req, res, next) => {
     const schema = Joi.object({
@@ -21,6 +22,18 @@ module.exports = {
     const validationResult = schemaFavorite.validate(req.body);
     if (validationResult.error) {
       return res.status(400).json({ status: validationResult.error.details });
+    }
+    next();
+  },
+  userValidation:(req, res, next)=>{
+    const schemaUser= Joi.object({
+      password:Joi.string().required(),
+      email: Joi.string().email({ minDomainSegments: 2 }).required(),
+
+    });
+    const validationResult = schemaUser.validate(req.body);
+    if (validationResult.error) {
+      return res.status(409).json({ status: validationResult.error.details, message: "Email in use" });
     }
     next();
   }

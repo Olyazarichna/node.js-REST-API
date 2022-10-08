@@ -1,15 +1,19 @@
-const { User } = require("../models/users");
+const { User } = require("../../models/users");
+
 const bcrypt = require("bcryptjs");
+
 const jwt = require("jsonwebtoken");
+
 require("dotenv").config();
 
 const { SECRET_KEY } = process.env;
 
-const RequestError = require("../heplers/requestError");
+const RequestError = require("../../heplers/requestError");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
+  console.log(user);
   if (!user) {
     throw RequestError(401, "Email not found");
   }
@@ -21,10 +25,14 @@ const login = async (req, res) => {
     id: user._id,
   };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "2h" });
-  res.json({ token, user:{
-      email:user.email,
-      subscription: user.subscription
-  } });
+  await User.findByIdAndUpdate(user._id, {token});
+  res.json({
+    token,
+    user: {
+      email: user.email,
+      subscription: user.subscription,
+    },
+  });
 };
 
 module.exports = login;

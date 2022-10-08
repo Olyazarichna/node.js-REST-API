@@ -1,8 +1,14 @@
-const { Contact } = require("../../src/models/contact");
-const RequestError = require("../heplers/requestError");
+const { Contact } = require("../../models/contact");
+const RequestError = require("../../heplers/requestError");
 
 const getContacts = async (req, res, next) => {
-  const contacts = await Contact.find({});
+  const { _id: owner } = req.user;
+  const { page = 1, limit = 20, ...query } = req.query;
+  const skip = (page - 1) * limit;
+  const contacts = await Contact.find({ owner, ...query }, "-createdAt -updateAt", {
+    skip,
+    limit,
+  });
   res.status(201).json(contacts);
 };
 
@@ -33,7 +39,9 @@ const deleteContact = async (req, res, next) => {
 };
 
 const addNewContact = async (req, res, next) => {
-  const contact = await Contact.create(req.body);
+  console.log(req.user);
+  const { _id: owner } = req.user;
+  const contact = await Contact.create({ ...req.body, owner });
   res.json({
     contact,
     message: "Contact added",
@@ -58,21 +66,23 @@ const changeContact = async (req, res, next) => {
   });
 };
 
-const updateFavorite =async(req, res, next)=>{
-const {contactId} = req.params;
-const {favorite} =req.body;
-const updateContact = await Contact.findByIdAndUpdate(contactId, {favorite});
-if(!updateContact){
-  return res.json({
-    message:  "missing field favorite",
-    status: 404
-  })
-}
+const updateFavorite = async (req, res, next) => {
+  const { contactId } = req.params;
+  const { favorite } = req.body;
+  const updateContact = await Contact.findByIdAndUpdate(contactId, {
+    favorite,
+  });
+  if (!updateContact) {
+    return res.json({
+      message: "Missing field favorite",
+      status: 404,
+    });
+  }
   res.json({
     message: "Field favorite update",
-    status:200
-  })
-}
+    status: 200,
+  });
+};
 
 module.exports = {
   getContacts,
@@ -80,5 +90,5 @@ module.exports = {
   deleteContact,
   addNewContact,
   changeContact,
-  updateFavorite
+  updateFavorite,
 };

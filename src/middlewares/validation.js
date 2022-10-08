@@ -1,6 +1,8 @@
 const Joi = require("joi");
 const validNum = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
 
+const subscr = ["starter", "pro", "business"];
+
 module.exports = {
   contactValidation: (req, res, next) => {
     const schema = Joi.object({
@@ -15,7 +17,7 @@ module.exports = {
     }
     next();
   },
-  favoriteValidation:(req, res, next) => {
+  favoriteValidation: (req, res, next) => {
     const schemaFavorite = Joi.object({
       favorite: Joi.boolean().required(),
     });
@@ -25,16 +27,32 @@ module.exports = {
     }
     next();
   },
-  userValidation:(req, res, next)=>{
-    const schemaUser= Joi.object({
-      password:Joi.string().required(),
+  userValidation: (req, res, next) => {
+    const schemaUser = Joi.object({
+      password: Joi.string().required(),
       email: Joi.string().email({ minDomainSegments: 2 }).required(),
-
+      subscription: Joi.string(),
     });
     const validationResult = schemaUser.validate(req.body);
     if (validationResult.error) {
-      return res.status(409).json({ status: validationResult.error.details, message: "Email in use" });
+      return res
+        .status(409)
+        .json({
+          status: validationResult.error.details,
+          message: "Email in use",
+        });
     }
     next();
-  }
+  },
+
+  subscriptionValidation: (req, res, next) => {
+    const schema = Joi.object({
+      subscription: Joi.string().valid(...subscr).required(),
+    });
+    const validationResult = schema.validate(req.body);
+    if (validationResult.error) {
+      return res.status(409).json({ status: validationResult.error.details });
+    }
+    next();
+  },
 };

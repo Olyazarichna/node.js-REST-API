@@ -1,7 +1,7 @@
-const { User } = require("../models/users");
+const { User } = require("../../models/users");
 const bcrypt = require("bcryptjs");
 
-const RequestError = require("../heplers/requestError");
+const RequestError = require("../../heplers/requestError");
 
 const register = async (req, res) => {
   const { email, password, subscription } = req.body;
@@ -9,7 +9,7 @@ const register = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user) {
-    throw new RequestError(409, "Email in use");
+    throw RequestError(409, "Email in use" );
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
@@ -20,7 +20,10 @@ const register = async (req, res) => {
   });
   res.json({
     status: 201,
-    email: newUser.email,
+    user: {email: newUser.email,
+      subscription :newUser.subscription
+    }
+    
   });
 };
 

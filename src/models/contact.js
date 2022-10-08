@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 
+
 const contactSchema = new Schema(
   {
     name: {
@@ -23,6 +24,7 @@ const contactSchema = new Schema(
   },
   { versionKey: false, timestamps: true }
 );
+
 
 const Contact = model("contacts", contactSchema);
 

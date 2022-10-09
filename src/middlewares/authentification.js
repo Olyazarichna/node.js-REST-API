@@ -9,7 +9,7 @@ const authenticate = async (req, res, next) => {
   try {
     const { authorization = "" } = req.headers;
     const [tokenType = "", token = ""] = authorization.split(" ");
-    if (tokenType !== "Bearer") {
+    if (tokenType !== "Bearer" || !token) {
       throw RequestError(401);
     }
     try {

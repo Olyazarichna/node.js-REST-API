@@ -1,6 +1,6 @@
 const { User } = require("../../models/users");
 const bcrypt = require("bcryptjs");
-
+const gravatar = require("gravatar");
 const RequestError = require("../../heplers/requestError");
 
 const register = async (req, res) => {
@@ -11,17 +11,19 @@ const register = async (req, res) => {
   if (user) {
     throw RequestError(409, "Email in use" );
   }
-
+const avatarURL = gravatar.url(email);
   const hashPassword = await bcrypt.hash(password, 10);
   const newUser = await User.create({
     email,
     subscription,
     password: hashPassword,
+    avatarURL,
   });
   res.json({
     status: 201,
     user: {email: newUser.email,
-      subscription :newUser.subscription
+      subscription :newUser.subscription,
+      avatarURL: newUser.avatarURL,
     }
     
   });

@@ -13,7 +13,6 @@ const RequestError = require("../../heplers/requestError");
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  console.log(user);
   if (!user) {
     throw RequestError(401, "Email not found");
   }

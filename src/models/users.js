@@ -1,5 +1,4 @@
 const { Schema, model } = require("mongoose");
-const handleSaveErrors = require("../heplers/handleSaveErrors");
 
 const userSchema = new Schema(
   {
@@ -25,13 +24,7 @@ const userSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-// const handleSaveErrors = (error, data, next)=>{
-  
-//   console.log(error.name);
-//   console.log(error.message);
-// next();
-// }
-userSchema.post('save', handleSaveErrors);
+
 const User = model("user", userSchema);
 
 module.exports = { User };

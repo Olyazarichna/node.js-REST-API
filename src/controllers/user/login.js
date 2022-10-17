@@ -12,11 +12,8 @@ const RequestError = require("../../heplers/RequestError");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-// console.log("PPP", password);
   const user = await User.findOne({ email });
-  // console.log("USER",user);
   if (!user) {
-
     throw RequestError(401, "Email not found");
   }
   const passwordCompare = await bcrypt.compare(password, user.password);

@@ -1,9 +1,3 @@
-// 1.log with pass and email
-// 2.find user with email
-// 3.compare password with secret pass
-// 4. make token
-// 5.update user with adding token to user
-// 6.return user token status
 
 const login = require("../controllers/user/login");
 const { User } = require("../models/users");
@@ -12,8 +6,6 @@ require("dotenv").config();
 const bcrypt = require("bcryptjs");
 
 describe("Login test", () => {
-  // beforeAll(()=>app.listen(3000));
-  // afterAlll(()=>app.close());
   it("Should return token,object user with email and subscription", async () => {
     const mReq = {
       body: {
@@ -38,6 +30,7 @@ describe("Login test", () => {
       },
       token: token,
     };
+
     jest.spyOn(User, "findOne").mockImplementationOnce(async () => mReq);
 
     jest

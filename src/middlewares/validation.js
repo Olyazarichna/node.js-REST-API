@@ -35,19 +35,19 @@ module.exports = {
     });
     const validationResult = schemaUser.validate(req.body);
     if (validationResult.error) {
-      return res
-        .status(409)
-        .json({
-          status: validationResult.error.details,
-          message: "Email in use",
-        });
+      return res.status(409).json({
+        status: validationResult.error.details,
+        message: "Email in use",
+      });
     }
     next();
   },
 
   subscriptionValidation: (req, res, next) => {
     const schema = Joi.object({
-      subscription: Joi.string().valid(...subscr).required(),
+      subscription: Joi.string()
+        .valid(...subscr)
+        .required(),
     });
     const validationResult = schema.validate(req.body);
     if (validationResult.error) {

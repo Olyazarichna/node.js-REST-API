@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const RequestError = require("../heplers/requestError");
+const RequestError = require("../heplers/RequestError");
 
 const { User } = require("../models/users");
 

@@ -1,5 +1,5 @@
 const { Contact } = require("../../models/contact");
-const RequestError = require("../../heplers/requestError");
+const RequestError = require("../../heplers/RequestError");
 
 const getContacts = async (req, res, next) => {
   const { _id: owner } = req.user;
@@ -14,10 +14,12 @@ const getContacts = async (req, res, next) => {
 
 const getContactById = async (req, res, next) => {
   const { contactId } = req.params;
-  const contact = await Contact.findById(contactId,  "-createdAt -updatedAt");
+  const contact = await Contact.findById(contactId, "-createdAt -updatedAt");
   if (!contact) {
-    throw RequestError(404, "Not found");
+    
+  throw RequestError(404, "Not found");
   }
+
   res.json({ contact, status: "Success" });
 };
 
@@ -27,7 +29,7 @@ const deleteContact = async (req, res, next) => {
 
   if (!contact) {
     if (!contact) {
-      throw Error(404, "Not found");
+      throw RequestError(404, "Not found");
     }
   }
   return res.json({
@@ -38,7 +40,6 @@ const deleteContact = async (req, res, next) => {
 };
 
 const addNewContact = async (req, res, next) => {
-  console.log(req.user);
   const { _id: owner } = req.user;
   const contact = await Contact.create({ ...req.body, owner });
   res.json({

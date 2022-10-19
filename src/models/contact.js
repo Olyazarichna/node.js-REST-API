@@ -1,15 +1,15 @@
 const { Schema, model } = require("mongoose");
-const handleSaveErrors = require("../heplers/handleSaveErrors");
+
 
 const contactSchema = new Schema(
   {
     name: {
       type: String,
       required: [true, "Set name for contact"],
+      unique: true,
     },
     email: {
       type: String,
-      unique: true,
     },
     phone: {
       type: String,
@@ -26,8 +26,7 @@ const contactSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-contactSchema.post('save', handleSaveErrors);
 
 const Contact = model("contacts", contactSchema);
 
-module.exports =  {Contact} ;
+module.exports = { Contact };

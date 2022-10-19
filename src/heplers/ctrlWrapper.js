@@ -3,7 +3,8 @@ const ctrlWrapper = (ctrl) => {
     try {
       await ctrl(req, res, next);
     } catch (error) {
-      next(error.message);
+      console.log(error);
+      next(error);
     }
   };
   return func;

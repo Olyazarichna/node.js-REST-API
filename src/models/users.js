@@ -1,5 +1,4 @@
 const { Schema, model } = require("mongoose");
-const handleSaveErrors = require("../heplers/handleSaveErrors");
 
 const userSchema = new Schema(
   {
@@ -18,20 +17,21 @@ const userSchema = new Schema(
       default: "starter",
     },
     token: String,
-    avatarURL:{
-      type:String,
-    }
+    avatarURL: {
+      type: String,
+    },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+    },
   },
   { versionKey: false, timestamps: true }
 );
 
-// const handleSaveErrors = (error, data, next)=>{
-  
-//   console.log(error.name);
-//   console.log(error.message);
-// next();
-// }
-userSchema.post('save', handleSaveErrors);
 const User = model("user", userSchema);
 
 module.exports = { User };

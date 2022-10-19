@@ -40,7 +40,6 @@ const deleteContact = async (req, res, next) => {
 };
 
 const addNewContact = async (req, res, next) => {
-  console.log(req.user);
   const { _id: owner } = req.user;
   const contact = await Contact.create({ ...req.body, owner });
   res.json({

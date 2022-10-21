@@ -1,6 +1,6 @@
 const { User } = require("../../models/users");
-const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const sendEmail = require("../../heplers/sendEmail");
 
 const extraVerify = async (req, res) => {
   const { email } = req.body;
@@ -12,14 +12,11 @@ const extraVerify = async (req, res) => {
   } else {
     const mail = {
       to: email,
-      from: "olya.zarichna@ukr.net",
       subject: "Please Verify Your Email",
-      text: "Let's verify your email",
-      html: `<a href="http://localhost:3000/api/users/verify/${user.verificationToken}" target="_blank"><strong>Let's verify ${email}</strong></a>`,
+      text: "Please verify your email",
+      html: `<a href="http://localhost:3000/api/users/verify/${user.verificationToken}" target="_blank"><strong>Please verify email</strong></a>`,
     };
-    await sgMail
-      .send(mail)
-      .then(() => {
+    await sendEmail(mail).then(() => {
         console.log("Email send successful");
       })
       .catch((error) => {

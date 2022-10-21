@@ -3,9 +3,7 @@ const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
 const RequestError = require("../../heplers/RequestError");
 const { v4: uuidv4 } = require("uuid");
-
-const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const sendEmail = require("../../heplers/sendEmail");
 
 const register = async (req, res) => {
   const { email, password, subscription } = req.body;
@@ -28,15 +26,14 @@ const register = async (req, res) => {
 
   await newUser.save();
 
+  await sendEmail(email);
   const mail = {
     to: email,
-    from: "olya.zarichna@ukr.net",
     subject: "Please Verify Your Email",
-    text: "Let's verify your email",
-    html: `<a href="http://localhost:3000/api/users/verify/${verificationToken}" target="_blank"><strong>Let's verify ${email}</strong></a>`,
+    text: "Please verify your email",
+    html: `<a href="http://localhost:3000/api/users/verify/${verificationToken}" target="_blank"><strong>Please verify email</strong></a>`,
   };
-  await sgMail
-    .send(mail)
+  await sendEmail(mail)
     .then(() => {
       console.log("Email send successful");
     })

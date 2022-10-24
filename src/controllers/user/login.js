@@ -4,8 +4,6 @@ const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
 
-require("dotenv").config();
-
 const { SECRET_KEY } = process.env;
 
 const RequestError = require("../../heplers/RequestError");

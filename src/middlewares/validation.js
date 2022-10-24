@@ -55,4 +55,14 @@ module.exports = {
     }
     next();
   },
+  verifyEmail: (req, res, next) => {
+    const schema = Joi.object({
+      email: Joi.string().required(),
+    });
+    const validationResult = schema.validate(req.body);
+    if (validationResult.error) {
+      return res.status(409).json({ status: validationResult.error.details });
+    }
+    next();
+  },
 };

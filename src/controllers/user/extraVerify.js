@@ -1,6 +1,7 @@
 const { User } = require("../../models/users");
 
 const sendEmail = require("../../heplers/sendEmail");
+const createVerifyEmail = require("../../heplers/createVerifyEmail");
 
 const extraVerify = async (req, res) => {
   const { email } = req.body;
@@ -10,13 +11,15 @@ const extraVerify = async (req, res) => {
   if (email && user.verify === true) {
     res.status(404).json({ message: "Verification has already been passed" });
   } else {
-    const mail = {
-      to: email,
-      subject: "Please Verify Your Email",
-      text: "Please verify your email",
-      html: `<a href="http://localhost:3000/api/users/verify/${user.verificationToken}" target="_blank"><strong>Please verify email</strong></a>`,
-    };
-    await sendEmail(mail).then(() => {
+    const mail = createVerifyEmail(email, user.verificationToken);
+    // const mail = {
+    //   to: email,
+    //   subject: "Please Verify Your Email",
+    //   text: "Please verify your email",
+    //   html: `<a href="http://localhost:3000/api/users/verify/${user.verificationToken}" target="_blank"><strong>Please verify email</strong></a>`,
+    // };
+    await sendEmail(mail)
+      .then(() => {
         console.log("Email send successful");
       })
       .catch((error) => {

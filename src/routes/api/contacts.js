@@ -1,23 +1,13 @@
 const express = require("express");
 const ctrlWrapper = require("../../heplers/ctrlWrapper");
 const router = express.Router();
-// const {isValidId,
-// authenticate,
-// } = require("../../middlewares")
+
 const isValidId = require("../../middlewares/isValidId");
 const {
   contactValidation,
   favoriteValidation,
 } = require("../../../src/middlewares/validation.js");
 
-// const {
-//   getContacts,
-//   getContactById,
-//   deleteContact,
-//   addNewContact,
-//   changeContact,
-//   updateFavorite,
-// } = require("../../controllers/contacts/contactsController");
 const authenticate = require("../../middlewares/authentification");
 const {
   getContacts,

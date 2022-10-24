@@ -4,6 +4,7 @@ const gravatar = require("gravatar");
 const RequestError = require("../../heplers/RequestError");
 const { v4: uuidv4 } = require("uuid");
 const sendEmail = require("../../heplers/sendEmail");
+const createVerifyEmail = require("../../heplers/createVerifyEmail");
 
 const register = async (req, res) => {
   const { email, password, subscription } = req.body;
@@ -27,12 +28,7 @@ const register = async (req, res) => {
   await newUser.save();
 
   await sendEmail(email);
-  const mail = {
-    to: email,
-    subject: "Please Verify Your Email",
-    text: "Please verify your email",
-    html: `<a href="http://localhost:3000/api/users/verify/${verificationToken}" target="_blank"><strong>Please verify email</strong></a>`,
-  };
+  const mail = createVerifyEmail(email, verificationToken);
   await sendEmail(mail)
     .then(() => {
       console.log("Email send successful");
